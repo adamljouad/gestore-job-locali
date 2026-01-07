@@ -12,7 +12,7 @@ def add_job(job_type, payload_dict):
 
     c.execute(
         """
-        INSERT INTO jobs (job_type, payload, status, created_at)
+        INSERT INTO jobs (type, payload, status, created_at)
         VALUES (?,  ?, ?, ?)
         """,
         (job_type, payload_text, status, created_at)
