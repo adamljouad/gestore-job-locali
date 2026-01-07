@@ -38,5 +38,32 @@ def cli_add_job():
     job_id = add_job(job_type, payload_dict)
     print(f"Job creato con id {job_id}")
 
+def cli_list_jobs():
+    """
+    Stampa tutti i job presenti nel database in modo leggibile.
+    """
+    conn = get_connection()
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM jobs")
+    jobs = c.fetchall()
+    conn.close()
+
+    if not jobs:
+        print("nessun job trovato")
+        return
+    for job in jobs:
+        job_id, job_type, payload, status, created_at = job
+        print(f"ID: {job_id} | Tipo: {job_type} | Status: {status} | Creato: {created_at}")
+        print(f"Payload: {payload}")
+        print("-" * 50)
+
+
 if __name__ == "__main__":
-    cli_add_job()
+    scelta = input("Cosa vuoi fare? (add/list): ").strip().lower()
+    if scelta == "add":
+        cli_add_job()
+    elif scelta == "list":
+        cli_list_jobs()
+    else:
+        print("Opzione non valida")
